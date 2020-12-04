@@ -1,10 +1,8 @@
-use std::fs;
-use std::vec;
-use std::io;
+use aoc2020::read_i32_tokens;
 
 fn main() {
     let filename = "in-data/day1.txt";
-    let data = read_input(filename).expect("Error reading input");
+    let data = read_i32_tokens(filename);
 
     println!("Part 1: {}", part_1(&data).unwrap());
     println!("Part 2: {}", part_2(&data).unwrap());
@@ -32,10 +30,4 @@ fn part_2(data: &[i32]) -> Result<i32, &'static str> {
         }
     }
     Err("No result found")
-}
-
-fn read_input(filename: &str) -> io::Result<vec::Vec<i32>> {
-    let contents = fs::read_to_string(filename)?;
-    let str_array = contents.trim().split('\n').collect::<Vec<&str>>();
-    Ok(str_array.iter().map(|s| s.parse::<i32>().unwrap()).collect::<Vec<i32>>())
 }
