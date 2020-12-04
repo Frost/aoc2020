@@ -3,7 +3,7 @@ use std::fs;
 fn main() -> std::io::Result<()> {
     let filename = "in-data/day3.txt";
     let contents = fs::read_to_string(filename)?;
-    let data = contents.trim(); //split('\n').reverse().collect::<vec::Vec<&str>>();
+    let data = contents.trim();
 
     let trees_1 = traverse_data(&data, 1, 1);
     let trees_2 = traverse_data(&data, 1, 3);
@@ -20,9 +20,8 @@ fn main() -> std::io::Result<()> {
 fn traverse_data(data: &str, row_diff: usize, col_diff: usize) -> u32 {
     let mut trees = 0;
     let mut index = 0;
-    let mut lines = data.lines();
     let mut row = 0;
-    while let Some(line) = lines.next() {
+    for line in data.lines() {
         if row % row_diff > 0 {
             row = (row + 1) % row_diff;
             continue;
