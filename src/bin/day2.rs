@@ -1,6 +1,4 @@
-use std::fs;
-use std::vec;
-use std::io;
+use aoc2020::read_string_input;
 
 struct Policy {
     pub min: usize,
@@ -13,24 +11,28 @@ struct Password {
     pub password: String,
 }
 
-fn main() -> io::Result<()> {
-    let data = read_input("in-data/day2.txt")?;
-    let valid_passwords = data.iter().filter(|p| check_password_validity(&p));
-    println!("Part 1: {}", valid_passwords.count());
-    let valid_passwords_2 = data.iter().filter(|p| check_password_validity_2(&p));
-    println!("Part 2: {}", valid_passwords_2.count());
-    Ok(())
+fn main() {
+    let data = read_input("in-data/day2.txt");
+
+    println!("Part 1: {}", part_1(&data));
+    println!("Part 2: {}", part_2(&data));
 }
 
-fn read_input(filename: &str) -> io::Result<vec::Vec<Password>> {
-    let contents = fs::read_to_string(filename)?;
-    let str_array = contents.trim().split('\n').collect::<vec::Vec<&str>>();
-    Ok(str_array.iter().map(parse_password).collect::<vec::Vec<Password>>())
+fn read_input(filename: &str) -> Vec<Password> {
+    read_string_input(filename).lines().map(parse_password).collect::<Vec<Password>>()
 }
 
-fn parse_password(line: &&str) -> Password {
-    let parts = line.trim().split(' ').collect::<vec::Vec<&str>>();
-    let minmax = parts[0].split('-').collect::<vec::Vec<&str>>();
+fn part_1(data: &[Password]) -> usize {
+    data.iter().filter(|p| check_password_validity(&p)).count()
+}
+
+fn part_2(data: &[Password]) -> usize {
+    data.iter().filter(|p| check_password_validity_2(&p)).count()
+}
+
+fn parse_password(line: &str) -> Password {
+    let parts = line.trim().split(' ').collect::<Vec<&str>>();
+    let minmax = parts[0].split('-').collect::<Vec<&str>>();
     let policy = Policy {
         min: minmax[0].parse::<usize>().unwrap(),
         max: minmax[1].parse::<usize>().unwrap(),
