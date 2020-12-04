@@ -16,9 +16,9 @@ struct Password {
 fn main() -> io::Result<()> {
     let data = read_input("in-data/day2.txt")?;
     let valid_passwords = data.iter().filter(|p| check_password_validity(&p));
-    println!("{:?}", valid_passwords.count());
+    println!("Part 1: {}", valid_passwords.count());
     let valid_passwords_2 = data.iter().filter(|p| check_password_validity_2(&p));
-    println!("{:?}", valid_passwords_2.count());
+    println!("Part 2: {}", valid_passwords_2.count());
     Ok(())
 }
 
