@@ -1,9 +1,8 @@
-use std::fs;
+use aoc2020::read_string_input;
 
-fn main() -> std::io::Result<()> {
+fn main() {
     let filename = "in-data/day3.txt";
-    let contents = fs::read_to_string(filename)?;
-    let data = contents.trim();
+    let data = read_string_input(filename);
 
     let trees_1 = traverse_data(&data, 1, 1);
     let trees_2 = traverse_data(&data, 1, 3);
@@ -13,8 +12,6 @@ fn main() -> std::io::Result<()> {
 
     println!("Part 1: {}", trees_2);
     println!("Part 2: {}", trees_1 * trees_2 * trees_3 * trees_4 * trees_5);
-
-    Ok(())
 }
 
 fn traverse_data(data: &str, row_diff: usize, col_diff: usize) -> u32 {
