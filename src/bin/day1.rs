@@ -12,7 +12,7 @@ fn part_1(data: &[i32]) -> Result<i32, &'static str> {
     for i in data {
         for j in data {
             if i + j == 2020 {
-                return Ok(i * j)
+                return Ok(i * j);
             }
         }
     }
@@ -24,7 +24,7 @@ fn part_2(data: &[i32]) -> Result<i32, &'static str> {
         for j in data {
             for k in data {
                 if i + j + k == 2020 {
-                    return Ok(i * j * k)
+                    return Ok(i * j * k);
                 }
             }
         }
