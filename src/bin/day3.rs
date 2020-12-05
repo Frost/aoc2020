@@ -11,7 +11,10 @@ fn main() {
     let trees_5 = traverse_data(&data, 2, 1);
 
     println!("Part 1: {}", trees_2);
-    println!("Part 2: {}", trees_1 * trees_2 * trees_3 * trees_4 * trees_5);
+    println!(
+        "Part 2: {}",
+        trees_1 * trees_2 * trees_3 * trees_4 * trees_5
+    );
 }
 
 fn traverse_data(data: &str, row_diff: usize, col_diff: usize) -> u32 {
