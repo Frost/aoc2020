@@ -19,7 +19,10 @@ fn main() {
 }
 
 fn read_input(filename: &str) -> Vec<Password> {
-    read_string_input(filename).lines().map(parse_password).collect::<Vec<Password>>()
+    read_string_input(filename)
+        .lines()
+        .map(parse_password)
+        .collect::<Vec<Password>>()
 }
 
 fn part_1(data: &[Password]) -> usize {
@@ -27,7 +30,9 @@ fn part_1(data: &[Password]) -> usize {
 }
 
 fn part_2(data: &[Password]) -> usize {
-    data.iter().filter(|p| check_password_validity_2(&p)).count()
+    data.iter()
+        .filter(|p| check_password_validity_2(&p))
+        .count()
 }
 
 fn parse_password(line: &str) -> Password {
