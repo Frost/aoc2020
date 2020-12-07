@@ -42,7 +42,6 @@ use std::cmp::Ordering;
 //     FFFBBBFRRR: row 14, column 7, seat ID 119.
 //     BBFFBBFRLL: row 102, column 4, seat ID 820.
 
-
 #[derive(Debug, Eq)]
 struct BoardingPass {
     row: u32,
