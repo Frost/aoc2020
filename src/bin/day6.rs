@@ -9,7 +9,10 @@ fn main() {
 }
 
 fn read_input(filename: &str) -> Vec<Vec<HashSet<String>>> {
-    read_string_input(filename).split("\n\n").map(parse_group).collect()
+    read_string_input(filename)
+        .split("\n\n")
+        .map(parse_group)
+        .collect()
 }
 
 fn part_1(data: &Vec<Vec<HashSet<String>>>) -> usize {
@@ -32,7 +35,6 @@ fn parse_person(data: &str) -> HashSet<String> {
     set
 }
 
-
 fn union_group(group: &Vec<HashSet<String>>) -> HashSet<String> {
     let mut set = HashSet::new();
     for person in group {
@@ -42,7 +44,10 @@ fn union_group(group: &Vec<HashSet<String>>) -> HashSet<String> {
 }
 
 fn intersect_group(group: &Vec<HashSet<String>>) -> HashSet<String> {
-    let mut set: HashSet<String> = "abcdefghijklmnopqrstuvwxyz".split("").map(|c| String::from(c)).collect();
+    let mut set: HashSet<String> = "abcdefghijklmnopqrstuvwxyz"
+        .split("")
+        .map(|c| String::from(c))
+        .collect();
     for person in group {
         set = set.intersection(person).cloned().collect();
     }
