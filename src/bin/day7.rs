@@ -88,6 +88,7 @@ impl FromStr for BagContents {
 struct BagRule {
     color: String,
     rules: Vec<BagContents>,
+    child_bags: Option<usize>,
 }
 
 impl FromStr for BagRule {
@@ -113,14 +114,18 @@ impl FromStr for BagRule {
             None => vec![],
         };
 
-        Ok(BagRule { color, rules })
+        Ok(BagRule {
+            color,
+            rules,
+            child_bags: None,
+        })
     }
 }
 
 fn part_2(contents: &str) -> usize {
-    let rules = parse_input_part_2(&contents);
+    let mut rules = parse_input_part_2(&contents);
 
-    count_bags(&rules, "shiny gold") - 1
+    count_bags(&mut rules, "shiny gold") - 1
 }
 
 fn parse_input_part_2(input: &str) -> HashMap<String, BagRule> {
@@ -131,44 +136,25 @@ fn parse_input_part_2(input: &str) -> HashMap<String, BagRule> {
     map
 }
 
-fn count_bags(rules: &HashMap<String, BagRule>, color: &str) -> usize {
-    1 + match rules.get(color) {
-        Some(rule) => {
-            if rule.rules.is_empty() {
-                0
-            } else {
-                rule.rules
-                    .iter()
-                    .map(|r| r.amount * count_bags(rules, &r.color))
-                    .sum::<usize>()
+fn count_bags(rules: &mut HashMap<String, BagRule>, color: &str) -> usize {
+    let mut rules = rules;
+    let rule = rules.get(color).unwrap().clone();
+    1 + match rule.child_bags {
+        Some(child_bags) => child_bags,
+        None => {
+            let mut child_bags = 0;
+            for bag in rule.rules.iter() {
+                child_bags += bag.amount * count_bags(&mut rules, &bag.color);
             }
+            rules.get_mut(color).unwrap().child_bags = Some(child_bags);
+            child_bags
         }
-        None => 0,
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    // #[test]
-    // fn test_find_content_colors() {
-    //     let no_other_bags_exepcted: Vec<String> = vec![];
-    //     assert_eq!(
-    //         find_content_colors(&"no other bags"),
-    //         no_other_bags_exepcted
-    //     );
-
-    //     assert_eq!(
-    //         find_content_colors(&"1 light brown bag"),
-    //         vec!["light brown"]
-    //     );
-
-    //     assert_eq!(
-    //         find_content_colors(&"1 light brown bag, 2 bright red bags"),
-    //         vec!["light brown", "bright red"]
-    //     )
-    // }
 
     #[test]
     fn test_parse_input_part_1() {
@@ -201,15 +187,15 @@ dark yellow bags contain 2 dark green bags.
 dark green bags contain 2 dark blue bags.
 dark blue bags contain 2 dark violet bags.
 dark violet bags contain no other bags.";
-        let rules = parse_input_part_2(&sample_input);
+        let mut rules = parse_input_part_2(&sample_input);
 
-        assert_eq!(count_bags(&rules, "dark violet"), 1);
-        assert_eq!(count_bags(&rules, "dark blue"), 3);
-        assert_eq!(count_bags(&rules, "dark green"), 7);
-        assert_eq!(count_bags(&rules, "dark yellow"), 15);
-        assert_eq!(count_bags(&rules, "dark orange"), 31);
-        assert_eq!(count_bags(&rules, "dark red"), 63);
-        assert_eq!(count_bags(&rules, "shiny gold"), 127);
+        assert_eq!(count_bags(&mut rules, "dark violet"), 1);
+        assert_eq!(count_bags(&mut rules, "dark blue"), 3);
+        assert_eq!(count_bags(&mut rules, "dark green"), 7);
+        assert_eq!(count_bags(&mut rules, "dark yellow"), 15);
+        assert_eq!(count_bags(&mut rules, "dark orange"), 31);
+        assert_eq!(count_bags(&mut rules, "dark red"), 63);
+        assert_eq!(count_bags(&mut rules, "shiny gold"), 127);
     }
 
     #[test]
